@@ -441,8 +441,9 @@ def send_bill_to_seller(bill_data):
     message += f"👤 Customer: {bill_data['username']}\n"
     message += f"🏠 Address: {bill_data['address']}\n"
     message += f"🕒 Time: {bill_data['timestamp']}\n\n"
-    message += "*🛍️ Items:*\n"
-    message += f"🧾 UPI Payment ID: {bill_data['payment_id']}\n\n"
+    message += "*🛍️ Items:*\n"   
+    message += f"🧾 UPI Payment ID: {bill_data.get('payment_id', 'N/A')}\n\n"
+    message +="Order to be prepared in 5 days"
     for item in bill_data["items"]:
         message += f"- {item['name']}: ₹{item['price']}\n"
     message += f"\n💰 *Total: ₹{bill_data['total']}*"
@@ -525,8 +526,11 @@ Items:\n""" + "\n".join([f"- {i['name']}: ₹{i['price']}" for i in formatted_it
 
         send_message(user_id, receipt)
         save_bill_to_json(user_id)
+        
+
         # ✅ CALL YOUR FUNCTION TO NOTIFY SELLER
         send_bill_to_seller(bill_data)
+
 
     return '', 200
 
